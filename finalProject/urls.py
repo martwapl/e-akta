@@ -21,4 +21,7 @@ from e_akta import views as pr_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', pr_views.EmployeeLoginView.as_view(), name="employee-login"),
+    path('employee_dashboard/', pr_views.EmployeeDashboardView.as_view(), name="employee-dashboard"),
+
 ]
