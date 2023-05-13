@@ -1,0 +1,13 @@
+{% extends 'e_akta/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Usuwanie pliku{% endblock %}
+{% block content %}
+    <h1>E-akta - Usuwanie pliku</h1>
+    </p>
+<form method="post">
+    {% csrf_token %}
+    <p>Czy na pewno chcesz usunąć {{ file.name }}?</p>
+    <input type="submit" value="Potwierdź">
+</form>
+{% endblock %}

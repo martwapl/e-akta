@@ -22,6 +22,12 @@ from e_akta import views as pr_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', pr_views.EmployeeLoginView.as_view(), name="employee-login"),
-    path('employee_dashboard/', pr_views.EmployeeDashboardView.as_view(), name="employee-dashboard"),
-
+    path('dashboard/', pr_views.EmployeeDashboardView.as_view(), name="dashboard"),
+    path('logout/', pr_views.EmployeeLogoutView.as_view(), name="employee-logout"),
+    path('case/<int:pk>', pr_views.CaseView.as_view(), name="case-view"),
+    path('upload/', pr_views.FileUploadView.as_view(), name="upload"),
+    path('delete/<int:pk>', pr_views.DeleteFileView.as_view(), name="delete"),
+    path('add_case/', pr_views.AddCaseView.as_view(), name="add-case"),
+    path('edit_case/<int:pk>', pr_views.EditCaseView.as_view(), name="edit_case"),
+    path('download/<int:file_id>', pr_views.DownloadView.as_view(), name="download"),
 ]

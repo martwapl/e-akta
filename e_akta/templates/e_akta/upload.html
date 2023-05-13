@@ -1,0 +1,13 @@
+{% extends 'e_akta/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Wgrywanie pliku{% endblock %}
+{%  load crispy_forms_tags %}
+{% block content %}
+    <h1>E-akta - Wgrywanie pliku</h1>
+    </p>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}{{form|crispy}}
+    <button type="submit" class="btn btn-primary">Wgraj plik</button>
+</form>
+{% endblock %}

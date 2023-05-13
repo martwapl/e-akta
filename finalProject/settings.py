@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
 ]
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
@@ -127,3 +128,9 @@ except ModuleNotFoundError:
     print("Brak konfiguracji bazy danych w pliku local_settings.py!")
     print("Uzupełnij dane i spróbuj ponownie!")
     exit(0)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
+
+MEDIA_URL = '/files/'
+
+LOGIN_URL = '/login'
