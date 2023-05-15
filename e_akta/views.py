@@ -5,13 +5,14 @@ from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.models import Group
 from django.urls import reverse_lazy
 import datetime
 
 
 # Create your views here.
 from .models import Case, File, Event, Profile
-from .forms import LoginForm, FileUploadForm, AddCaseForm, RegisterForm, CaseUpdateFormSU, AddEventForm
+from .forms import LoginForm, FileUploadForm, AddCaseForm, RegisterUserForm, RegisterProfileForm, CaseUpdateFormSU, AddEventForm
 User = get_user_model()
 
 
@@ -183,3 +184,29 @@ class EventsView(LoginRequiredMixin, PermissionRequiredMixin, View):
             })
 
         return JsonResponse(output, safe=False)
+
+class RegisterView(View):
+    template_name = "e_akta/register.html"
+    def get(self, request):
+        user_form = RegisterUserForm
+        profile_form = RegisterProfileForm
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+        return render(request, self.template_name, context)
+    def post(self, request, *args, **kwargs):
+        user_form = RegisterUserForm(request.POST)
+        profile_form = RegisterProfileForm(request.POST)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save(commit=False)
+            user.save()
+            user_group = Group.objects.get(name='clients')
+            user.groups.add(user_group)
+            return redirect('employee-login')
+        else:
+            return render(request, self.template_name, context)

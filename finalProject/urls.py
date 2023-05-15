@@ -33,5 +33,6 @@ urlpatterns = [
     path('calendar', pr_views.CalendarView.as_view(), name="calendar"),
     path('add_event/', pr_views.AddEventView.as_view(), name="add-event"),
     path('events/', pr_views.EventsView.as_view(), name="events"),
+    path('register/', pr_views.RegisterView.as_view(), name="register"),
 
 ]

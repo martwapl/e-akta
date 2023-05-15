@@ -14,12 +14,32 @@ class LoginForm(forms.Form):
     username = forms.CharField(label="Użytkownik", max_length=128)
     password = forms.CharField(label="Hasło", widget=forms.PasswordInput)
 
-class RegisterForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+class RegisterUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ["username", "email", "password1", "password2"]
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = "Użytkownik"
+        self.fields['first_name'].label = "Imię"
+        self.fields['last_name'].label = "Nazwisko"
+        self.fields['email'].label = "E-mail"
+        self.fields['password1'].label = "Hasło"
+        self.fields['password2'].label = "Powtórz hasło"
+
+class RegisterProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ['phone', 'address']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['phone'].label = "Numer telefonu"
+        self.fields['address'].label = "Adres"
+
+
 
 class FileUploadForm(forms.ModelForm):
     class Meta:

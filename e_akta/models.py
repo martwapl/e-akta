@@ -5,7 +5,7 @@ import datetime
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=16)
     address = models.TextField(null=True, blank=True)
 
