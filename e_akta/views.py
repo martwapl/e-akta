@@ -1,18 +1,18 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.urls import reverse_lazy
-from PyPDF2 import PdfWriter, PdfReader
+import datetime
+
 
 # Create your views here.
-from .models import Case, File
-from .forms import LoginForm, FileUploadForm, AddCaseForm, RegisterForm, CaseUpdateForm, CaseUpdateFormSU
+from .models import Case, File, Event, Profile
+from .forms import LoginForm, FileUploadForm, AddCaseForm, RegisterForm, CaseUpdateFormSU, AddEventForm
 User = get_user_model()
-from .views import *
 
 
 class EmployeeLoginView(View):
@@ -79,9 +79,13 @@ class FileUploadView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = File
     template_name = "e_akta/upload.html"
     form_class = FileUploadForm
-
-
     success_url = '/case/{case_id}'
+
+    def form_valid(self, form):
+        f = form.save(commit=False)
+        f.user = self.request.user
+        f.save()
+        return super().form_valid(form)
 
 
 class DeleteFileView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -116,10 +120,10 @@ class EditCaseView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'e_akta/edit_case.html'
     success_url = reverse_lazy('dashboard')
     def form_valid(self, form):
-            f = form.save(commit=False)
-            f.user = self.request.user
-            f.save()
-            return super().form_valid(form)
+        f = form.save(commit=False)
+        f.user = self.request.user
+        f.save()
+        return super().form_valid(form)
 
 
 class DownloadView(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -133,3 +137,49 @@ class DownloadView(LoginRequiredMixin, PermissionRequiredMixin, View):
         response = HttpResponse(file.file, content_type='application/pdf')
         response['Content-Disposition'] = f'attatchment; filename="{file.file.name}"'
         return response
+
+    def form_valid(self, form):
+        f = form.save(commit=False)
+        f.user = self.request.user
+        f.save()
+        return super().form_valid(form)
+
+
+class AddEventView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    login_url = '/'
+    permission_required = ["e_akta.add_event"]
+    template_name = 'e_akta/add_event.html'
+    model = Event
+    form_class = AddEventForm
+    success_url = reverse_lazy('calendar')
+class CalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
+
+    login_url = '/'
+    permission_required = ["e_akta.view_event"]
+    template_name = "e_akta/calendar.html"
+
+    def get(self, request):
+        events = Event.objects.all()
+        context = {
+            "events": events,
+        }
+        return render(request, self.template_name, context)
+
+class EventsView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/'
+    permission_required = ["e_akta.view_event"]
+    template_name = "e_akta/calendar.html"
+
+    def get(self, request):
+
+        events = Event.objects.all()
+        output = []
+        for event in events:
+            output.append({
+                'title': event.title,
+                'start': event.start,
+                'end': event.end,
+                'place': event.place,
+            })
+
+        return JsonResponse(output, safe=False)

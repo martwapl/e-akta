@@ -35,6 +35,7 @@
                                 <td class="col-3">{{ file.description }}</td>
                                 <td class="col-2">{{ file.date_created }}</td>
                                 <td class="col-3">{{ file.date_updated }}</td>
+                                 <td class="col-2"><button type="button" class="btn btn-primary rounded-0" onclick="location.href='/case/{{ case.id }}'">Dodaj plik</button></td>
                                 <td class="col-2"><button type="button" class="btn btn-primary rounded-0" onclick="location.href='/delete/{{ file.id }}'">Usuń plik</button></td>
                                 <td class="col-2"><button type="button" class="btn btn-primary rounded-0" onclick="location.href='/download/{{ file.id }}'">Pobierz plik</button></td>
                                 </tr>

@@ -4,10 +4,9 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
+import datetime
 
-from .models import Case, File
-
-from .models import *
+from .models import Case, File, Event, Profile
 
 User = get_user_model()
 
@@ -32,6 +31,7 @@ class FileUploadForm(forms.ModelForm):
         self.fields['file'].label = "Plik: (dozwolony typ: pdf)"
         self.fields['description'].label = "Opis"
         self.fields['case'].label = "Identyfikator sprawy"
+        self.fields['case'].queryset = File.objects.values_list('name', flat=True)
 
 
 class AddCaseForm(forms.ModelForm):
@@ -69,17 +69,15 @@ class CaseUpdateFormSU(forms.ModelForm):
         self.fields['category'].label = "Kategoria sprawy"
         self.fields['user'].label = "Nazwa użytkownika"
 
-class CaseUpdateForm(forms.ModelForm):
+class AddEventForm(forms.ModelForm):
 
     class Meta:
-        model = Case
-        exclude = ['user']
+        model = Event
+        fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) :
         super().__init__(*args, **kwargs)
-        self.fields['name'].label = "Nazwa sprawy"
-        self.fields['number'].label = "Numer sprawy"
-        self.fields['description'].label = "Opis sprawy"
-        self.fields['status'].label = "Stan sprawy"
-        self.fields['category'].label = "Kategoria sprawy"
-
+        self.fields['title'].label = "Nazwa zdarzenia"
+        self.fields['start'].label = "Data i godzina rozpoczęcia (format: D/M/Y H/M, np 5/6/2023 14:00)"
+        self.fields['end'].label = "Data i godzina zakończenia (format: D/M/Y H/M, np 5/6/2023 14:00)"
+        self.fields['place'].label = "Miescowość/Sąd"

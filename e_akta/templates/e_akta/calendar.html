@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='en'>
+{% extends 'e_akta/base.html' %}
+{% block content %}
+  <head>
+    <meta charset='utf-8' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"
+    },
+            initialView: "dayGridMonth",
+            editable: true,
+            dayMaxEvents: true,
+            interactive: true,
+            navLinks: true,
+            events: '/events',
+            eventColor: 'green',
+
+
+        });
+        calendar.render();
+      });
+
+    </script>
+  </head>
+  <body>
+                    <div class="col noPadding d-flex justify-content-end mb-2"><a
+                href="{% url 'add-event' %}" class="btn btn-primary rounded-0">Dodaj zdarzenie</a></div>
+    <div id='calendar'></div>
+
+    </div>
+
+  </body>
+{% endblock %}
+</html>

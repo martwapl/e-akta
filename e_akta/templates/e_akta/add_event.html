@@ -1,0 +1,13 @@
+{% extends 'e_akta/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Dodawanie zdarzenia{% endblock %}
+{%  load crispy_forms_tags %}
+{% block content %}
+    <h1>E-akta - Dodawanie zdarzenia</h1>
+    </p>
+<form method="post">
+    {% csrf_token %}{{form|crispy}}
+    <button type="submit" class="btn btn-primary">Dodaj sprawę</button>
+</form>
+{% endblock %}

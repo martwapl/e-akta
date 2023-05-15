@@ -1,17 +1,5 @@
 {% extends 'e_akta/base.html' %}
 {% block content %}
- <div class="dashboard-header">
-     <div class="row border-bottom border-3 p-1 m-1">
-     <div class="col noPadding"><h3 class="color-header text-uppercase">E-akta</h3></div>
-         {% if perms.e_akta.add_case %}
-        <div class="col noPadding d-flex justify-content-end mb-2"><a
-                href="{% url 'add-case' %}"
-                class="btn btn-primary rounded-0">Dodaj sprawę</a></div>
-                 {% endif %}
-        <div class="col noPadding d-flex justify-content-end mb-2"><a
-                href="{% url 'employee-logout' %}" class="btn btn-primary rounded-0">Wyloguj</a></div>
-    </div>
-                </div>
                 <div class="m-4 p-4 border-dashed">
                         <table class="table">
                         <thead>
@@ -39,8 +27,8 @@
                              {% if user.is_superuser %}
                              <td class="col-2"><button type="button" class="btn btn-primary rounded-4" onclick="location.href='/edit_case/{{ case.id }}'">Edytuj sprawę</button></td>
                              {% endif %}
-                         </tr>
                          {% endfor %}
+                         </tr>
                          </tbody>
                         </table>
                 </div>

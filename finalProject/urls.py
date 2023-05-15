@@ -28,6 +28,10 @@ urlpatterns = [
     path('upload/', pr_views.FileUploadView.as_view(), name="upload"),
     path('delete/<int:pk>', pr_views.DeleteFileView.as_view(), name="delete"),
     path('add_case/', pr_views.AddCaseView.as_view(), name="add-case"),
-    path('edit_case/<int:pk>', pr_views.EditCaseView.as_view(), name="edit_case"),
+    path('edit_case/<int:pk>', pr_views.EditCaseView.as_view(), name="edit-case"),
     path('download/<int:file_id>', pr_views.DownloadView.as_view(), name="download"),
+    path('calendar', pr_views.CalendarView.as_view(), name="calendar"),
+    path('add_event/', pr_views.AddEventView.as_view(), name="add-event"),
+    path('events/', pr_views.EventsView.as_view(), name="events"),
+
 ]
