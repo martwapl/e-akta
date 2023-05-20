@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os.path
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-as*_(zxx9ns!y_hxrkq)$-k1fh$p95gf&5r2gif7@o0npvf^ep'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'mwaplaktest@gmail.com'
+EMAIL_HOST_PASSWORD = 'gfzurnmeiqrvhohf'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 
 ALLOWED_HOSTS = []
 
@@ -40,8 +52,10 @@ INSTALLED_APPS = [
     'e_akta.apps.EAktaConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    'six',
 ]
 
+SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 

@@ -13,9 +13,8 @@
                             </tr>
                         </thead>
                          <tbody>
-
                          {% for case in cases %}
-                             {% if request.user.id == case.user_id or user.is_superuser %}
+                             {% if user.email == case.mail  %}
                             <tr class="d-flex">
                                 <td class="col-2">{{ case.id }} </td>
                                 <td class="col-3">{{ case.name }}</td>
@@ -23,12 +22,11 @@
                                 <td class="col-2">{{ case.status }}</td>
                                 <td class="col-2">{{ case.category }}</td>
                                 <td class="col-2"><button type="button" class="btn btn-primary rounded-4" onclick="location.href='/case/{{ case.id }}'">Szczegóły sprawy</button></td>
-                                <td class="col-2"><button type="button" class="btn btn-primary rounded-4" onclick="location.href='/invitation/'">Zaproś klienta</button></td>
-                             {% endif %}
-                             {% if user.is_superuser %}
-                             <td class="col-2"><button type="button" class="btn btn-primary rounded-4" onclick="location.href='/edit_case/{{ case.id }}'">Edytuj sprawę</button></td>
                              {% endif %}
                          {% endfor %}
+                                  <div class="col noPadding d-flex justify-content-end mb-2"><a
+                href="{% url 'logout' %}" class="btn btn-primary rounded-0">Wyloguj klienta</a></div>
+    </div>
                          </tr>
                          </tbody>
                         </table>

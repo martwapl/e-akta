@@ -5,8 +5,7 @@
     <h1>E-akta - rejestracja klienta</h1>
 <form method="post">
     {% csrf_token %}
-    {{user_form|crispy}}
-    {{profile_form|crispy}}
+    {{form|crispy}}
     <button type="submit" class="btn btn-success">Zarejestruj się</button>
 </form>
 {% endblock %}

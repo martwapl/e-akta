@@ -2,7 +2,7 @@
 {% block title %}Logowanie{% endblock %}
 {%  load crispy_forms_tags %}
 {% block content %}
-    <h1>E-akta - logowanie pracownika</h1>
+    <h1>E-akta - logowanie</h1>
 <form method="post">
     {% csrf_token %}{{form|crispy}}
     <button type="submit" class="btn btn-success">Zaloguj się</button>

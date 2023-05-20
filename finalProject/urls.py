@@ -21,18 +21,21 @@ from e_akta import views as pr_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', pr_views.EmployeeLoginView.as_view(), name="employee-login"),
+    path('', pr_views.LoginView.as_view(), name="login"),
     path('dashboard/', pr_views.EmployeeDashboardView.as_view(), name="dashboard"),
-    path('logout/', pr_views.EmployeeLogoutView.as_view(), name="employee-logout"),
+    path('client_dashboard/', pr_views.CustomerDashboardView.as_view(), name="customer-dashboard"),
+    path('logout/', pr_views.LogoutView.as_view(), name="logout"),
     path('case/<int:pk>', pr_views.CaseView.as_view(), name="case-view"),
     path('upload/', pr_views.FileUploadView.as_view(), name="upload"),
     path('delete/<int:pk>', pr_views.DeleteFileView.as_view(), name="delete"),
     path('add_case/', pr_views.AddCaseView.as_view(), name="add-case"),
     path('edit_case/<int:pk>', pr_views.EditCaseView.as_view(), name="edit-case"),
     path('download/<int:file_id>', pr_views.DownloadView.as_view(), name="download"),
-    path('calendar', pr_views.CalendarView.as_view(), name="calendar"),
+    path('calendar/', pr_views.CalendarView.as_view(), name="calendar"),
     path('add_event/', pr_views.AddEventView.as_view(), name="add-event"),
     path('events/', pr_views.EventsView.as_view(), name="events"),
-    path('register/', pr_views.RegisterView.as_view(), name="register"),
+    path('register/<uidb64>/<token>', pr_views.RegisterView.as_view(), name="register"),
+    path('activate/<uidb64>/<token>', pr_views.ActivateView.as_view(), name="activate"),
+    path('invitation/', pr_views.ContactFormView.as_view(), name="invite"),
 
 ]

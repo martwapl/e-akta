@@ -1,16 +1,35 @@
 from django.db import models
-from django.contrib.auth.models import User, Group, Permission, PermissionsMixin
+from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
-import datetime
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
+class SendEmail(models.Model):
+    recipient = models.EmailField()
+    subject = models.CharField(max_length=128)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=16)
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(max_length=150, blank=False)
+    phone = models.CharField(max_length=16, blank=True)
     address = models.TextField(null=True, blank=True)
+    signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.user)
+        return self.user.username
+
+
+@receiver(post_save, sender=User)
+def update_profile_signal(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()
+
 
 class Case(models.Model):
     CASE_STATUS = {
@@ -26,17 +45,20 @@ class Case(models.Model):
         ('Prawo rodzinne', 'Prawo rodzinne'),
     }
     name = models.CharField(max_length=128)
-    number = models.PositiveIntegerField(unique=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
     status = models.CharField(choices=CASE_STATUS)
-    category = models.CharField(choices=CATEGORY, default='Prawo karne')
+    category = models.CharField(choices=CATEGORY)
+    mail = models.EmailField(max_length=150, blank=True)
+
+
 
 class File(models.Model):
     name = models.CharField(max_length=32)
-    file = models.FileField(max_length=25, validators=[FileExtensionValidator(['pdf'])])
+    file = models.FileField(max_length=64,
+                            validators=[FileExtensionValidator(['pdf'])])
     description = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
@@ -47,6 +69,4 @@ class Event(models.Model):
     title = models.CharField(max_length=255)
     start = models.DateTimeField(null=True)
     end = models.DateTimeField(null=True)
-    place = models.CharField(max_length=64, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
