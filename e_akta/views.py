@@ -16,7 +16,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 
 # Create your views here.
-from .models import Case, File, Event, Profile
+from .models import Case, File, Event
 from .forms import LoginForm, FileUploadForm, AddCaseForm, \
     RegisterUserForm, CaseUpdateFormSU, AddEventForm, EmailForm
 from .token import account_activation_token
@@ -68,7 +68,6 @@ class EmployeeDashboardView(LoginRequiredMixin, PermissionRequiredMixin, View):
         cases_count = Case.objects.all().count()
         context = {
             'cases': cases,
-            'cases_count': cases_count,
         }
         return render(request, self.template_name, context)
 

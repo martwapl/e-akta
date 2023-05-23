@@ -9,6 +9,8 @@ class SendEmail(models.Model):
     recipient = models.EmailField()
     subject = models.CharField(max_length=128)
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.sender
 
 
 class Profile(models.Model):
@@ -53,6 +55,8 @@ class Case(models.Model):
     category = models.CharField(choices=CATEGORY)
     mail = models.EmailField(max_length=150, blank=True)
 
+    def __str__(self):
+        return self.name
 
 
 class File(models.Model):
@@ -64,9 +68,15 @@ class File(models.Model):
     date_updated = models.DateTimeField(auto_now=True, null=True)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.case
+
 class Event(models.Model):
     event_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     start = models.DateTimeField(null=True)
     end = models.DateTimeField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
